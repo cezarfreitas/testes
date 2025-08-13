@@ -4,10 +4,30 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Upload, Save, Image, Link, Globe, Twitter, Facebook } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Upload,
+  Save,
+  Image,
+  Link,
+  Globe,
+  Twitter,
+  Facebook,
+} from "lucide-react";
 import { SEOConfig, SEOResponse, UploadResponse } from "@shared/seo";
 import { toast } from "sonner";
 
@@ -32,7 +52,7 @@ export default function SEOSettings() {
     robots: "index, follow",
     language: "pt-BR",
     companyName: "",
-    socialLinks: {}
+    socialLinks: {},
   });
 
   const [loading, setLoading] = useState(false);
@@ -47,7 +67,7 @@ export default function SEOSettings() {
     try {
       const response = await fetch("/api/seo");
       const data: SEOResponse = await response.json();
-      
+
       if (data.success && data.data) {
         setConfig(data.data);
       }
@@ -63,9 +83,9 @@ export default function SEOSettings() {
       const response = await fetch("/api/seo", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(config)
+        body: JSON.stringify(config),
       });
 
       const data: SEOResponse = await response.json();
@@ -90,25 +110,25 @@ export default function SEOSettings() {
       const reader = new FileReader();
       reader.onload = async (e) => {
         const base64 = e.target?.result as string;
-        
+
         const response = await fetch("/api/upload", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             image: base64,
             filename: file.name,
-            type: file.type
-          })
+            type: file.type,
+          }),
         });
 
         const data: UploadResponse = await response.json();
 
         if (data.success && data.url) {
-          setConfig(prev => ({
+          setConfig((prev) => ({
             ...prev,
-            [fieldName]: data.url
+            [fieldName]: data.url,
           }));
           toast.success("Imagem enviada com sucesso!");
         } else {
@@ -125,19 +145,19 @@ export default function SEOSettings() {
   };
 
   const updateField = (field: keyof SEOConfig, value: string) => {
-    setConfig(prev => ({
+    setConfig((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
   const updateSocialLink = (platform: string, url: string) => {
-    setConfig(prev => ({
+    setConfig((prev) => ({
       ...prev,
       socialLinks: {
         ...prev.socialLinks,
-        [platform]: url
-      }
+        [platform]: url,
+      },
     }));
   };
 
@@ -148,7 +168,8 @@ export default function SEOSettings() {
           <div>
             <h1 className="text-3xl font-bold">Configurações SEO</h1>
             <p className="text-muted-foreground">
-              Configure as meta tags e imagens para otimização nos mecanismos de busca
+              Configure as meta tags e imagens para otimização nos mecanismos de
+              busca
             </p>
           </div>
           <Button onClick={saveSEOConfig} disabled={loading}>
@@ -220,12 +241,17 @@ export default function SEOSettings() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="language">Idioma</Label>
-                    <Select value={config.language} onValueChange={(value) => updateField("language", value)}>
+                    <Select
+                      value={config.language}
+                      onValueChange={(value) => updateField("language", value)}
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="pt-BR">Português (Brasil)</SelectItem>
+                        <SelectItem value="pt-BR">
+                          Português (Brasil)
+                        </SelectItem>
                         <SelectItem value="en-US">English (US)</SelectItem>
                         <SelectItem value="es-ES">Español</SelectItem>
                       </SelectContent>
@@ -234,15 +260,26 @@ export default function SEOSettings() {
 
                   <div className="space-y-2">
                     <Label htmlFor="robots">Robots</Label>
-                    <Select value={config.robots} onValueChange={(value) => updateField("robots", value)}>
+                    <Select
+                      value={config.robots}
+                      onValueChange={(value) => updateField("robots", value)}
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="index, follow">Index, Follow</SelectItem>
-                        <SelectItem value="noindex, nofollow">No Index, No Follow</SelectItem>
-                        <SelectItem value="index, nofollow">Index, No Follow</SelectItem>
-                        <SelectItem value="noindex, follow">No Index, Follow</SelectItem>
+                        <SelectItem value="index, follow">
+                          Index, Follow
+                        </SelectItem>
+                        <SelectItem value="noindex, nofollow">
+                          No Index, No Follow
+                        </SelectItem>
+                        <SelectItem value="index, nofollow">
+                          Index, No Follow
+                        </SelectItem>
+                        <SelectItem value="noindex, follow">
+                          No Index, Follow
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -270,7 +307,8 @@ export default function SEOSettings() {
                   Open Graph (Facebook)
                 </CardTitle>
                 <CardDescription>
-                  Configurações para compartilhamento no Facebook e outras redes sociais
+                  Configurações para compartilhamento no Facebook e outras redes
+                  sociais
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -289,7 +327,9 @@ export default function SEOSettings() {
                   <Textarea
                     id="ogDescription"
                     value={config.ogDescription}
-                    onChange={(e) => updateField("ogDescription", e.target.value)}
+                    onChange={(e) =>
+                      updateField("ogDescription", e.target.value)
+                    }
                     placeholder="Descrição para compartilhamento social"
                     rows={2}
                   />
@@ -298,7 +338,10 @@ export default function SEOSettings() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="ogType">Tipo OG</Label>
-                    <Select value={config.ogType} onValueChange={(value) => updateField("ogType", value)}>
+                    <Select
+                      value={config.ogType}
+                      onValueChange={(value) => updateField("ogType", value)}
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -339,13 +382,20 @@ export default function SEOSettings() {
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="twitterCard">Tipo de Card</Label>
-                  <Select value={config.twitterCard} onValueChange={(value: "summary" | "summary_large_image") => updateField("twitterCard", value)}>
+                  <Select
+                    value={config.twitterCard}
+                    onValueChange={(value: "summary" | "summary_large_image") =>
+                      updateField("twitterCard", value)
+                    }
+                  >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="summary">Summary</SelectItem>
-                      <SelectItem value="summary_large_image">Summary Large Image</SelectItem>
+                      <SelectItem value="summary_large_image">
+                        Summary Large Image
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -365,7 +415,9 @@ export default function SEOSettings() {
                   <Input
                     id="twitterTitle"
                     value={config.twitterTitle}
-                    onChange={(e) => updateField("twitterTitle", e.target.value)}
+                    onChange={(e) =>
+                      updateField("twitterTitle", e.target.value)
+                    }
                     placeholder="Título para Twitter"
                   />
                 </div>
@@ -375,7 +427,9 @@ export default function SEOSettings() {
                   <Textarea
                     id="twitterDescription"
                     value={config.twitterDescription}
-                    onChange={(e) => updateField("twitterDescription", e.target.value)}
+                    onChange={(e) =>
+                      updateField("twitterDescription", e.target.value)
+                    }
                     placeholder="Descrição para Twitter"
                     rows={2}
                   />
@@ -401,18 +455,23 @@ export default function SEOSettings() {
                     <Label>Favicon (32x32px)</Label>
                     <div className="mt-2 flex items-center space-x-4">
                       {config.favicon && (
-                        <img src={config.favicon} alt="Favicon" className="w-8 h-8" />
+                        <img
+                          src={config.favicon}
+                          alt="Favicon"
+                          className="w-8 h-8"
+                        />
                       )}
                       <Button
                         variant="outline"
                         disabled={uploading}
                         onClick={() => {
-                          const input = document.createElement('input');
-                          input.type = 'file';
-                          input.accept = 'image/*';
+                          const input = document.createElement("input");
+                          input.type = "file";
+                          input.accept = "image/*";
                           input.onchange = (e) => {
-                            const file = (e.target as HTMLInputElement).files?.[0];
-                            if (file) handleImageUpload(file, 'favicon');
+                            const file = (e.target as HTMLInputElement)
+                              .files?.[0];
+                            if (file) handleImageUpload(file, "favicon");
                           };
                           input.click();
                         }}
@@ -427,18 +486,23 @@ export default function SEOSettings() {
                     <Label>Apple Touch Icon (180x180px)</Label>
                     <div className="mt-2 flex items-center space-x-4">
                       {config.appleTouchIcon && (
-                        <img src={config.appleTouchIcon} alt="Apple Touch Icon" className="w-12 h-12 rounded-lg" />
+                        <img
+                          src={config.appleTouchIcon}
+                          alt="Apple Touch Icon"
+                          className="w-12 h-12 rounded-lg"
+                        />
                       )}
                       <Button
                         variant="outline"
                         disabled={uploading}
                         onClick={() => {
-                          const input = document.createElement('input');
-                          input.type = 'file';
-                          input.accept = 'image/*';
+                          const input = document.createElement("input");
+                          input.type = "file";
+                          input.accept = "image/*";
                           input.onchange = (e) => {
-                            const file = (e.target as HTMLInputElement).files?.[0];
-                            if (file) handleImageUpload(file, 'appleTouchIcon');
+                            const file = (e.target as HTMLInputElement)
+                              .files?.[0];
+                            if (file) handleImageUpload(file, "appleTouchIcon");
                           };
                           input.click();
                         }}
@@ -453,21 +517,29 @@ export default function SEOSettings() {
                     <Label>Imagem Open Graph (1200x630px)</Label>
                     <div className="mt-2 flex items-center space-x-4">
                       {config.ogImage && (
-                        <img src={config.ogImage} alt="OG Image" className="w-24 h-12 object-cover rounded" />
+                        <img
+                          src={config.ogImage}
+                          alt="OG Image"
+                          className="w-24 h-12 object-cover rounded"
+                        />
                       )}
                       <Button
                         variant="outline"
                         disabled={uploading}
                         onClick={() => {
-                          const input = document.createElement('input');
-                          input.type = 'file';
-                          input.accept = 'image/*';
+                          const input = document.createElement("input");
+                          input.type = "file";
+                          input.accept = "image/*";
                           input.onchange = (e) => {
-                            const file = (e.target as HTMLInputElement).files?.[0];
+                            const file = (e.target as HTMLInputElement)
+                              .files?.[0];
                             if (file) {
-                              handleImageUpload(file, 'ogImage');
+                              handleImageUpload(file, "ogImage");
                               // Also set as Twitter image
-                              setConfig(prev => ({ ...prev, twitterImage: prev.ogImage }));
+                              setConfig((prev) => ({
+                                ...prev,
+                                twitterImage: prev.ogImage,
+                              }));
                             }
                           };
                           input.click();
@@ -490,9 +562,7 @@ export default function SEOSettings() {
                   <Link className="mr-2 h-5 w-5" />
                   Redes Sociais
                 </CardTitle>
-                <CardDescription>
-                  Links para suas redes sociais
-                </CardDescription>
+                <CardDescription>Links para suas redes sociais</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
@@ -511,7 +581,9 @@ export default function SEOSettings() {
                     <Input
                       id="facebook"
                       value={config.socialLinks.facebook || ""}
-                      onChange={(e) => updateSocialLink("facebook", e.target.value)}
+                      onChange={(e) =>
+                        updateSocialLink("facebook", e.target.value)
+                      }
                       placeholder="https://facebook.com/seupage"
                       type="url"
                     />
@@ -522,7 +594,9 @@ export default function SEOSettings() {
                     <Input
                       id="twitter"
                       value={config.socialLinks.twitter || ""}
-                      onChange={(e) => updateSocialLink("twitter", e.target.value)}
+                      onChange={(e) =>
+                        updateSocialLink("twitter", e.target.value)
+                      }
                       placeholder="https://twitter.com/seuusuario"
                       type="url"
                     />
@@ -533,7 +607,9 @@ export default function SEOSettings() {
                     <Input
                       id="linkedin"
                       value={config.socialLinks.linkedin || ""}
-                      onChange={(e) => updateSocialLink("linkedin", e.target.value)}
+                      onChange={(e) =>
+                        updateSocialLink("linkedin", e.target.value)
+                      }
                       placeholder="https://linkedin.com/company/suaempresa"
                       type="url"
                     />
@@ -544,7 +620,9 @@ export default function SEOSettings() {
                     <Input
                       id="instagram"
                       value={config.socialLinks.instagram || ""}
-                      onChange={(e) => updateSocialLink("instagram", e.target.value)}
+                      onChange={(e) =>
+                        updateSocialLink("instagram", e.target.value)
+                      }
                       placeholder="https://instagram.com/seuusuario"
                       type="url"
                     />

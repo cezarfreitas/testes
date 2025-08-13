@@ -25,7 +25,7 @@ export default function LandingPage() {
     robots: "index, follow",
     language: "pt-BR",
     companyName: "",
-    socialLinks: {}
+    socialLinks: {},
   };
 
   const config = seoConfig || defaultConfig;

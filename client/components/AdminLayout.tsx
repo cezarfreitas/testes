@@ -10,7 +10,7 @@ import {
   Bell,
   User,
   Search,
-  Globe
+  Globe,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
@@ -29,7 +29,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <div className="w-8 h-8 bg-sidebar-primary rounded-lg flex items-center justify-center">
               <Sparkles className="w-5 h-5 text-sidebar-primary-foreground" />
             </div>
-            <span className="text-xl font-bold text-sidebar-foreground">AdminFlow</span>
+            <span className="text-xl font-bold text-sidebar-foreground">
+              AdminFlow
+            </span>
           </Link>
         </div>
 
@@ -132,9 +134,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </header>
 
         {/* Main Content Area */}
-        <main className="flex-1 overflow-auto p-6">
-          {children}
-        </main>
+        <main className="flex-1 overflow-auto p-6">{children}</main>
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ export function useSEO() {
         setLoading(true);
         const response = await fetch("/api/seo");
         const data: SEOResponse = await response.json();
-        
+
         if (data.success && data.data) {
           setSeoConfig(data.data);
         } else {

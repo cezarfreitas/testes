@@ -1,5 +1,11 @@
 import AdminLayout from "@/components/AdminLayout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, TrendingUp, Users, FileText, Settings } from "lucide-react";
 
@@ -86,14 +92,16 @@ export default function AdminDashboard() {
           <CardHeader>
             <CardTitle>Bem-vindo ao AdminFlow</CardTitle>
             <CardDescription>
-              Sua plataforma de administração está pronta para uso. Aqui você pode gerenciar todos os aspectos do seu sistema.
+              Sua plataforma de administração está pronta para uso. Aqui você
+              pode gerenciar todos os aspectos do seu sistema.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <p className="text-muted-foreground">
-                Para começar, você pode adicionar novos itens na barra lateral ou configurar suas preferências.
-                O sidebar está inicialmente vazio e pode ser personalizado conforme suas necessidades.
+                Para começar, você pode adicionar novos itens na barra lateral
+                ou configurar suas preferências. O sidebar está inicialmente
+                vazio e pode ser personalizado conforme suas necessidades.
               </p>
               <div className="flex flex-wrap gap-2">
                 <Button variant="outline" size="sm">
@@ -138,18 +146,20 @@ export default function AdminDashboard() {
           <Card>
             <CardHeader>
               <CardTitle>Sistema</CardTitle>
-              <CardDescription>
-                Status e informações do sistema
-              </CardDescription>
+              <CardDescription>Status e informações do sistema</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm">Status do Sistema</span>
-                <span className="text-sm text-green-600 font-medium">Online</span>
+                <span className="text-sm text-green-600 font-medium">
+                  Online
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm">Última Atualização</span>
-                <span className="text-sm text-muted-foreground">Há 2 horas</span>
+                <span className="text-sm text-muted-foreground">
+                  Há 2 horas
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm">Versão</span>
