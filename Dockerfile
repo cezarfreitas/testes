@@ -37,16 +37,17 @@ RUN chown -R appuser:nodejs /app
 # Switch to non-root user
 USER appuser
 
-# Expose port
-EXPOSE 3000
+# Expose common ports used by different platforms
+EXPOSE 3000 8080 80
 
 # Set environment variables
 ENV NODE_ENV=production
+ENV HOST=0.0.0.0
 ENV PORT=3000
 
-# Health check
+# Health check that adapts to the port
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD node -e "const http = require('http'); http.get('http://localhost:3000/api/ping', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"
+  CMD node -e "const http = require('http'); const port = process.env.PORT || 3000; http.get(\`http://localhost:\${port}/api/ping\`, (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"
 
 # Start the application
 CMD ["node", "dist/server/production.mjs"]
