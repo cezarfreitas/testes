@@ -193,7 +193,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="border-t border-border/40 mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 AdminFlow. Todos os direitos reservados.</p>
+            <p>&copy; 2024 {siteName}. Todos os direitos reservados.</p>
           </div>
         </div>
       </footer>
