@@ -9,6 +9,7 @@ O problema é que **a aplicação não estava servindo os arquivos estáticos** 
 #### ✅ CORRIGIDO:
 
 1. **Servidor agora serve SPA** (`server/index.ts`):
+
 ```javascript
 // Serve arquivos estáticos da build do React
 app.use(express.static("dist/spa"));
@@ -24,6 +25,7 @@ app.get("*", (req, res) => {
 ```
 
 2. **Detecção automática de plataforma** (`server/production.ts`):
+
 ```javascript
 // Detecta automaticamente: Fly.io, Heroku, Railway, etc.
 const detectedPlatform = detectPlatform();
@@ -31,6 +33,7 @@ const { port, host } = getPlatformConfig(detectedPlatform);
 ```
 
 3. **Dockerfile com múltiplas portas**:
+
 ```dockerfile
 EXPOSE 3000 8080 80  # Suporte a diferentes plataformas
 ENV HOST=0.0.0.0     # Aceita conexões externas
@@ -39,6 +42,7 @@ ENV HOST=0.0.0.0     # Aceita conexões externas
 ## 🚀 Como Usar a Solução
 
 ### 1. Rebuild da Aplicação
+
 ```bash
 # Rebuilda com as correções
 pnpm run build
@@ -48,6 +52,7 @@ node dist/server/production.mjs
 ```
 
 ### 2. Deploy Docker
+
 ```bash
 # Build da nova imagem
 docker build -t adminflow:latest .
@@ -59,18 +64,21 @@ docker build -t adminflow:latest .
 ### 3. Deploy em Plataforma
 
 #### Fly.io
+
 ```bash
 # Fly detecta automaticamente e usa porta 8080
 fly deploy
 ```
 
 #### Heroku
+
 ```bash
 # Heroku usa $PORT automaticamente
 git push heroku main
 ```
 
 #### Railway/Render
+
 ```bash
 # Plataforma detecta e configura automaticamente
 git push
@@ -79,6 +87,7 @@ git push
 ## 📊 Verificação de Funcionamento
 
 ### Teste Rápido
+
 ```bash
 # Substitua PORTA pela porta detectada
 curl http://localhost:PORTA/api/ping
@@ -87,6 +96,7 @@ curl http://localhost:PORTA/api/ping
 ```
 
 ### URLs Funcionais
+
 - **Landing Page**: `http://localhost:PORTA/`
 - **Admin Panel**: `http://localhost:PORTA/admin`
 - **SEO Config**: `http://localhost:PORTA/admin/seo`
@@ -95,6 +105,7 @@ curl http://localhost:PORTA/api/ping
 ## 🔍 Debug por Plataforma
 
 ### Fly.io
+
 ```bash
 # Ver logs
 fly logs
@@ -107,6 +118,7 @@ fly status
 ```
 
 ### Heroku
+
 ```bash
 # Ver logs
 heroku logs --tail
@@ -116,6 +128,7 @@ heroku ps
 ```
 
 ### Docker Local
+
 ```bash
 # Ver logs
 docker logs adminflow-app
@@ -158,6 +171,7 @@ A aplicação AdminFlow agora:
 4. **Funciona em qualquer lugar**: Docker, Fly.io, Heroku, Railway, etc.
 
 ### 🌐 Acesso Final
+
 ```
 http://sua-url-de-deploy/
 http://sua-url-de-deploy/admin
