@@ -161,10 +161,10 @@ export default function LandingPage() {
                 <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-primary-foreground" />
                 </div>
-                <span className="text-xl font-bold">AdminFlow</span>
+                <span className="text-xl font-bold">{siteName}</span>
               </div>
               <p className="text-muted-foreground">
-                Simplifique sua administração com nossa plataforma moderna.
+                {siteDescription}
               </p>
             </div>
             <div>
