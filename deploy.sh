@@ -44,6 +44,20 @@ print_warning "Stopping existing containers..."
 docker stop adminflow-app 2>/dev/null || true
 docker rm adminflow-app 2>/dev/null || true
 
+# Check and update lockfile if needed
+print_info "Checking pnpm lockfile..."
+if command -v pnpm &> /dev/null; then
+    if ! pnpm install --frozen-lockfile --dry-run &>/dev/null; then
+        print_warning "Updating outdated lockfile..."
+        pnpm install --no-frozen-lockfile
+        print_status "Lockfile updated"
+    else
+        print_status "Lockfile is up to date"
+    fi
+else
+    print_warning "pnpm not found locally, Docker will handle dependencies"
+fi
+
 # Build the Docker image
 print_status "Building Docker image..."
 docker build -t adminflow:latest .
