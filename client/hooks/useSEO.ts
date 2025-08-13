@@ -14,10 +14,8 @@ export function useSEO() {
         const data: SEOResponse = await response.json();
         
         if (data.success && data.data) {
-          console.log('useSEO: Loaded config:', data.data);
           setSeoConfig(data.data);
         } else {
-          console.error('useSEO: Failed to load config:', data);
           setError("Erro ao carregar configurações SEO");
         }
       } catch (err) {
