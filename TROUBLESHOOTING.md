@@ -3,16 +3,19 @@
 ## ❌ Erro: pnpm-lock.yaml desatualizado
 
 ### Problema
+
 ```
 ERR_PNPM_OUTDATED_LOCKFILE Cannot install with "frozen-lockfile" because pnpm-lock.yaml is not up to date
 ```
 
 ### Causa
+
 O arquivo `pnpm-lock.yaml` não está sincronizado com as mudanças no `package.json`.
 
 ### Soluções
 
 #### 1. Atualizar Lockfile Localmente (Recomendado)
+
 ```bash
 # Atualizar o lockfile
 pnpm install --no-frozen-lockfile
@@ -26,14 +29,18 @@ git commit -m "update lockfile"
 ```
 
 #### 2. Docker Build com Fallback
+
 O Dockerfile já está configurado para tentar o fallback automaticamente:
+
 ```dockerfile
 RUN pnpm install --frozen-lockfile --shamefully-hoist || \
     (echo "Lockfile outdated, updating..." && pnpm install --shamefully-hoist)
 ```
 
 #### 3. Script Automático
+
 Use o script de deploy que verifica automaticamente:
+
 ```bash
 ./deploy.sh
 ```
@@ -41,12 +48,14 @@ Use o script de deploy que verifica automaticamente:
 ### Prevenção
 
 1. **Sempre commitar o lockfile**:
+
 ```bash
 git add pnpm-lock.yaml package.json
 git commit -m "update dependencies"
 ```
 
 2. **Usar hooks de pre-commit** (opcional):
+
 ```bash
 # package.json
 {
@@ -57,6 +66,7 @@ git commit -m "update dependencies"
 ```
 
 3. **CI/CD Configuration**:
+
 ```yaml
 # .github/workflows/build.yml
 - name: Install dependencies
@@ -70,6 +80,7 @@ git commit -m "update dependencies"
 ## 🐛 Outros Erros Comuns
 
 ### Container não inicia
+
 ```bash
 # Verificar logs
 docker logs adminflow-app
@@ -82,6 +93,7 @@ docker build --no-cache -t adminflow:latest .
 ```
 
 ### Dependências faltando
+
 ```bash
 # Limpar cache do pnpm
 pnpm store prune
@@ -92,6 +104,7 @@ pnpm install
 ```
 
 ### Build falha
+
 ```bash
 # Verificar versão do Node.js
 node --version  # Deve ser >= 18
@@ -105,6 +118,7 @@ pnpm run build
 ```
 
 ### Performance lenta
+
 ```bash
 # Usar shamefully-hoist para resolver mais rápido
 pnpm install --shamefully-hoist
@@ -116,6 +130,7 @@ echo "shamefully-hoist=true" >> .npmrc
 ## 🔍 Debug
 
 ### Verificar estado do lockfile
+
 ```bash
 # Verificar diferenças
 pnpm install --frozen-lockfile --dry-run
@@ -128,6 +143,7 @@ pnpm audit
 ```
 
 ### Verificar build do Docker
+
 ```bash
 # Build com output detalhado
 docker build --progress=plain -t adminflow:latest .
@@ -144,6 +160,7 @@ docker run -it --rm adminflow:latest sh
 Se os problemas persistirem:
 
 1. **Limpar tudo e começar do zero**:
+
 ```bash
 rm -rf node_modules dist pnpm-lock.yaml
 pnpm install
@@ -151,11 +168,13 @@ pnpm run build
 ```
 
 2. **Verificar compatibilidade**:
+
 - Node.js >= 18
-- pnpm >= 8  
+- pnpm >= 8
 - Docker >= 20
 
 3. **Reportar issue** com:
+
 - Versões de Node.js, pnpm, Docker
 - Output completo do erro
 - Sistema operacional
