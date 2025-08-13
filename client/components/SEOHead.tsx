@@ -9,126 +9,67 @@ interface SEOHeadProps {
 
 export default function SEOHead({ config, pageTitle, pageDescription }: SEOHeadProps) {
   useEffect(() => {
-    const updateMetaTags = () => {
-      // Update document title
-      const title = pageTitle || config.title;
-      document.title = title || 'AdminFlow';
+    // Update document title immediately
+    const title = pageTitle || config.title || "AdminFlow";
+    document.title = title;
 
-      // Force basic meta tags even if empty
-      const description = pageDescription || config.description;
-      if (description) {
-        let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
-        if (!metaDesc) {
-          metaDesc = document.createElement('meta');
-          metaDesc.setAttribute('name', 'description');
-          document.head.appendChild(metaDesc);
-        }
-        metaDesc.setAttribute('content', description);
+    // Update description meta tag
+    const description = pageDescription || config.description || "";
+    let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', description);
+
+    // Update keywords meta tag
+    if (config.keywords) {
+      let metaKeywords = document.querySelector('meta[name="keywords"]') as HTMLMetaElement;
+      if (!metaKeywords) {
+        metaKeywords = document.createElement('meta');
+        metaKeywords.setAttribute('name', 'keywords');
+        document.head.appendChild(metaKeywords);
       }
+      metaKeywords.setAttribute('content', config.keywords);
+    }
 
-      // Helper function to update or create meta tags
-      const updateMetaTag = (name: string, content: string, property?: boolean) => {
-        const attribute = property ? 'property' : 'name';
-        let metaTag = document.querySelector(`meta[${attribute}="${name}"]`) as HTMLMetaElement;
-
-        if (!metaTag) {
-          metaTag = document.createElement('meta');
-          metaTag.setAttribute(attribute, name);
-          document.head.appendChild(metaTag);
-        }
-
-        metaTag.setAttribute('content', content || '');
-      };
-
-      // Helper function to update link tags
-      const updateLinkTag = (rel: string, href: string, sizes?: string, type?: string) => {
-        if (!href) return;
-
-        let linkTag = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement;
-        
-        if (!linkTag) {
-          linkTag = document.createElement('link');
-          linkTag.setAttribute('rel', rel);
-          document.head.appendChild(linkTag);
-        }
-        
-        linkTag.setAttribute('href', href);
-        if (sizes) linkTag.setAttribute('sizes', sizes);
-        if (type) linkTag.setAttribute('type', type);
-      };
-
-      // Basic SEO meta tags
-      updateMetaTag('description', pageDescription || config.description);
-      updateMetaTag('keywords', config.keywords);
-      updateMetaTag('robots', config.robots);
-      updateMetaTag('language', config.language);
-
-      // Canonical URL
-      if (config.canonical) {
-        let canonicalTag = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
-        if (!canonicalTag) {
-          canonicalTag = document.createElement('link');
-          canonicalTag.setAttribute('rel', 'canonical');
-          document.head.appendChild(canonicalTag);
-        }
-        canonicalTag.setAttribute('href', config.canonical);
+    // Update Open Graph tags
+    const ogTitle = config.ogTitle || title;
+    if (ogTitle) {
+      let ogTitleTag = document.querySelector('meta[property="og:title"]') as HTMLMetaElement;
+      if (!ogTitleTag) {
+        ogTitleTag = document.createElement('meta');
+        ogTitleTag.setAttribute('property', 'og:title');
+        document.head.appendChild(ogTitleTag);
       }
+      ogTitleTag.setAttribute('content', ogTitle);
+    }
 
-      // Open Graph meta tags
-      updateMetaTag('og:title', config.ogTitle || title, true);
-      updateMetaTag('og:description', config.ogDescription || pageDescription || config.description, true);
-      updateMetaTag('og:image', config.ogImage, true);
-      updateMetaTag('og:type', config.ogType, true);
-      updateMetaTag('og:url', config.ogUrl || config.canonical, true);
-      
-      if (config.companyName) {
-        updateMetaTag('og:site_name', config.companyName, true);
+    const ogDescription = config.ogDescription || description;
+    if (ogDescription) {
+      let ogDescTag = document.querySelector('meta[property="og:description"]') as HTMLMetaElement;
+      if (!ogDescTag) {
+        ogDescTag = document.createElement('meta');
+        ogDescTag.setAttribute('property', 'og:description');
+        document.head.appendChild(ogDescTag);
       }
+      ogDescTag.setAttribute('content', ogDescription);
+    }
 
-      // Twitter Card meta tags
-      updateMetaTag('twitter:card', config.twitterCard);
-      updateMetaTag('twitter:title', config.twitterTitle || config.ogTitle || title);
-      updateMetaTag('twitter:description', config.twitterDescription || config.ogDescription || pageDescription || config.description);
-      updateMetaTag('twitter:image', config.twitterImage || config.ogImage);
-      
-      if (config.twitterSite) {
-        updateMetaTag('twitter:site', config.twitterSite);
+    // Update favicon if provided
+    if (config.favicon) {
+      let faviconLink = document.querySelector('link[rel="icon"]') as HTMLLinkElement;
+      if (!faviconLink) {
+        faviconLink = document.createElement('link');
+        faviconLink.setAttribute('rel', 'icon');
+        document.head.appendChild(faviconLink);
       }
+      faviconLink.setAttribute('href', config.favicon);
+    }
 
-      // Favicon and icons
-      if (config.favicon) {
-        updateLinkTag('icon', config.favicon, '32x32', 'image/x-icon');
-        updateLinkTag('shortcut icon', config.favicon);
-      }
-
-      if (config.appleTouchIcon) {
-        updateLinkTag('apple-touch-icon', config.appleTouchIcon, '180x180');
-      }
-
-      // Structured data for company
-      if (config.companyName) {
-        let scriptTag = document.querySelector('script[type="application/ld+json"]');
-        if (!scriptTag) {
-          scriptTag = document.createElement('script');
-          scriptTag.setAttribute('type', 'application/ld+json');
-          document.head.appendChild(scriptTag);
-        }
-
-        const structuredData = {
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": config.companyName,
-          "url": config.canonical || config.ogUrl,
-          "logo": config.ogImage,
-          "sameAs": Object.values(config.socialLinks).filter(Boolean)
-        };
-
-        scriptTag.textContent = JSON.stringify(structuredData);
-      }
-    };
-
-    updateMetaTags();
+    console.log('SEO updated:', { title, description, ogTitle, ogDescription });
   }, [config, pageTitle, pageDescription]);
 
-  return null; // This component doesn't render anything
+  return null;
 }
