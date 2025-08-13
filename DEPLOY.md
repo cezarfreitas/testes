@@ -135,17 +135,19 @@ docker inspect adminflow-app | grep -A 10 "Mounts"
 Para deploy em servidor de produção:
 
 1. **Configure variáveis de ambiente**:
+
 ```bash
 export NODE_ENV=production
 export PORT=3000
 ```
 
 2. **Use proxy reverso** (Nginx/Apache):
+
 ```nginx
 server {
     listen 80;
     server_name yourdomain.com;
-    
+
     location / {
         proxy_pass http://localhost:3000;
         proxy_set_header Host $host;
@@ -155,6 +157,7 @@ server {
 ```
 
 3. **Configure SSL** com Let's Encrypt:
+
 ```bash
 certbot --nginx -d yourdomain.com
 ```
