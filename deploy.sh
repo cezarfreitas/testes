@@ -86,36 +86,45 @@ fi
 print_info "Waiting for application to start..."
 sleep 15
 
-# Check if application is healthy
-for i in {1..10}; do
-    if curl -f -s http://localhost:3000/api/ping > /dev/null 2>&1; then
-        print_status "AdminFlow is running successfully!"
-        echo ""
-        echo "🌐 Application URLs:"
-        echo "   • Landing Page: http://localhost:3000"
-        echo "   • Admin Panel:  http://localhost:3000/admin"
-        echo "   • SEO Settings: http://localhost:3000/admin/seo"
-        echo ""
-        echo "📊 Health Check: http://localhost:3000/api/ping"
-        echo ""
-        echo "📋 Container Management:"
-        echo "   • View logs:    docker logs adminflow-app"
-        echo "   • Stop app:     docker stop adminflow-app"
-        echo "   • Start app:    docker start adminflow-app"
-        echo "   • Remove app:   docker rm adminflow-app"
-        echo ""
+# Detect which port the app is running on
+PORTS=(3000 8080 80 8888)
+WORKING_PORT=""
+
+print_info "Detecting application port..."
+for port in "${PORTS[@]}"; do
+    if curl -f -s http://localhost:$port/api/ping > /dev/null 2>&1; then
+        WORKING_PORT=$port
         break
-    else
-        print_info "Waiting for application to be ready... (attempt $i/10)"
-        sleep 3
-    fi
-    
-    if [ $i -eq 10 ]; then
-        print_error "Application failed to start properly. Checking logs:"
-        docker logs adminflow-app --tail=50
-        exit 1
     fi
 done
+
+if [ -n "$WORKING_PORT" ]; then
+    print_status "AdminFlow is running successfully on port $WORKING_PORT!"
+    echo ""
+    echo "🌐 Application URLs:"
+    echo "   • Landing Page: http://localhost:$WORKING_PORT"
+    echo "   • Admin Panel:  http://localhost:$WORKING_PORT/admin"
+    echo "   • SEO Settings: http://localhost:$WORKING_PORT/admin/seo"
+    echo ""
+    echo "📊 Health Check: http://localhost:$WORKING_PORT/api/ping"
+    echo ""
+    echo "📋 Container Management:"
+    echo "   • View logs:    docker logs adminflow-app"
+    echo "   • Stop app:     docker stop adminflow-app"
+    echo "   • Start app:    docker start adminflow-app"
+    echo "   • Remove app:   docker rm adminflow-app"
+    echo ""
+else
+    print_error "Application failed to start properly on any expected port."
+    print_warning "Checking container logs for errors:"
+    docker logs adminflow-app --tail=50
+    echo ""
+    print_info "Manual port check commands:"
+    for port in "${PORTS[@]}"; do
+        echo "   curl http://localhost:$port/api/ping"
+    done
+    exit 1
+fi
 
 # Offer to show logs
 read -p "Would you like to view the application logs? (y/N): " -n 1 -r
