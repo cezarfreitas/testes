@@ -9,9 +9,14 @@ interface SEOHeadProps {
 
 export default function SEOHead({ config, pageTitle, pageDescription }: SEOHeadProps) {
   useEffect(() => {
-    // Update document title immediately
+    // Update document title immediately - force override
     const title = pageTitle || config.title || "AdminFlow";
     document.title = title;
+
+    // Also update the lang attribute if needed
+    if (config.language) {
+      document.documentElement.lang = config.language;
+    }
 
     // Update description meta tag
     const description = pageDescription || config.description || "";
