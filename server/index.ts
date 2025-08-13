@@ -35,5 +35,17 @@ export function createServer() {
   app.post("/api/upload", uploadImage);
   app.delete("/api/upload/:filename", deleteImage);
 
+  // SPA fallback - serve index.html for all non-API routes
+  app.get("*", (req, res) => {
+    // Don't serve index.html for API routes
+    if (req.path.startsWith("/api")) {
+      res.status(404).json({ error: "API endpoint not found" });
+      return;
+    }
+
+    // Serve index.html for all other routes (SPA routing)
+    res.sendFile("index.html", { root: "dist/spa" });
+  });
+
   return app;
 }
