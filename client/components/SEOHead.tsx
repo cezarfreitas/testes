@@ -13,6 +13,9 @@ export default function SEOHead({
   pageDescription,
 }: SEOHeadProps) {
   useEffect(() => {
+    // Ensure config exists
+    if (!config) return;
+
     // Update document title immediately - force override
     const title = pageTitle || config.title || "AdminFlow";
     document.title = title;
