@@ -11,8 +11,12 @@ app.listen(port, host, () => {
   console.log(`📡 Host: ${host}`);
   console.log(`🔌 Port: ${port}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
-  console.log(`📊 Health check: http://${host === "0.0.0.0" ? "localhost" : host}:${port}/api/ping`);
-  console.log(`🌐 Application: http://${host === "0.0.0.0" ? "localhost" : host}:${port}`);
+  console.log(
+    `📊 Health check: http://${host === "0.0.0.0" ? "localhost" : host}:${port}/api/ping`,
+  );
+  console.log(
+    `🌐 Application: http://${host === "0.0.0.0" ? "localhost" : host}:${port}`,
+  );
 
   // Log additional info for debugging
   console.log(`📁 Static files: dist/spa`);
