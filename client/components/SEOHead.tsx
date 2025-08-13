@@ -10,6 +10,8 @@ interface SEOHeadProps {
 export default function SEOHead({ config, pageTitle, pageDescription }: SEOHeadProps) {
   useEffect(() => {
     const updateMetaTags = () => {
+      console.log('SEOHead: Updating meta tags with config:', config);
+
       // Update document title
       const title = pageTitle || config.title;
       if (title) {
