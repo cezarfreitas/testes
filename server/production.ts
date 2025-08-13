@@ -27,7 +27,10 @@ const configs = {
   netlify: { port: process.env.PORT || 8888, host: "0.0.0.0" },
   railway: { port: process.env.PORT || 3000, host: "0.0.0.0" },
   render: { port: process.env.PORT || 10000, host: "0.0.0.0" },
-  local: { port: process.env.PORT || 3000, host: process.env.HOST || "0.0.0.0" },
+  local: {
+    port: process.env.PORT || 3000,
+    host: process.env.HOST || "0.0.0.0",
+  },
 };
 
 const config = configs[detectedPlatform] || configs.local;
