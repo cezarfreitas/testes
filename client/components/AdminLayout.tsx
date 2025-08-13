@@ -44,9 +44,22 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 <Button
                   variant="ghost"
                   className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  asChild
                 >
-                  <Home className="mr-2 h-4 w-4" />
-                  Dashboard
+                  <Link to="/admin">
+                    <Home className="mr-2 h-4 w-4" />
+                    Dashboard
+                  </Link>
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  asChild
+                >
+                  <Link to="/admin/seo">
+                    <Globe className="mr-2 h-4 w-4" />
+                    SEO
+                  </Link>
                 </Button>
               </div>
             </div>
