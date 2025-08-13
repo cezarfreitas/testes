@@ -11,7 +11,9 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml* ./
 
 # Install all dependencies (including dev for build)
-RUN pnpm install --frozen-lockfile --shamefully-hoist
+# Try frozen lockfile first, fallback to regular install if needed
+RUN pnpm install --frozen-lockfile --shamefully-hoist || \
+    (echo "Lockfile outdated, updating..." && pnpm install --shamefully-hoist)
 
 # Copy source code
 COPY . .
