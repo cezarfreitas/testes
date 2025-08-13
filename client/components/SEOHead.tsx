@@ -68,7 +68,6 @@ export default function SEOHead({ config, pageTitle, pageDescription }: SEOHeadP
       faviconLink.setAttribute('href', config.favicon);
     }
 
-    console.log('SEO updated:', { title, description, ogTitle, ogDescription });
   }, [config, pageTitle, pageDescription]);
 
   return null;
