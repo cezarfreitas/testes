@@ -40,12 +40,12 @@ RUN pnpm install --frozen-lockfile --prod --shamefully-hoist
 # Copy built application from build stage
 COPY --from=build /app/dist ./dist
 
-# Copy other necessary files
-COPY --from=build /app/data ./data
-COPY --from=build /app/public ./public
+# Copy other necessary files (create if they don't exist)
+COPY --from=build /app/data ./data 2>/dev/null || mkdir -p ./data
+COPY --from=build /app/public ./public 2>/dev/null || mkdir -p ./public
 
 # Create uploads directory
-RUN mkdir -p public/uploads
+RUN mkdir -p public/uploads data
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs
