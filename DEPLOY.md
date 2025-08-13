@@ -98,6 +98,18 @@ docker exec -it adminflow-app sh
 
 ## 🔧 Troubleshooting
 
+### Erro de Lockfile (Mais Comum)
+
+Se encontrar erro sobre `pnpm-lock.yaml` desatualizado:
+
+```bash
+# Atualizar lockfile
+pnpm install --no-frozen-lockfile
+
+# Rebuild
+docker build --no-cache -t adminflow:latest .
+```
+
 ### Problema: Container não inicia
 
 ```bash
@@ -129,6 +141,10 @@ Certifique-se de que os volumes estão montados corretamente:
 # Verificar volumes
 docker inspect adminflow-app | grep -A 10 "Mounts"
 ```
+
+### 📋 Guia Completo de Troubleshooting
+
+Para problemas mais complexos, consulte: [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
 
 ## 🌍 Deploy em Produção
 
