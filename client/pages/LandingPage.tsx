@@ -6,8 +6,17 @@ import { useSEO } from "@/hooks/useSEO";
 import SEOHead from "@/components/SEOHead";
 
 export default function LandingPage() {
+  const { seoConfig } = useSEO();
+
+  // Default fallback values if SEO config is not loaded or empty
+  const siteName = seoConfig?.companyName || "AdminFlow";
+  const siteTitle = seoConfig?.title || "Simplifique sua Administração";
+  const siteDescription = seoConfig?.description || "Uma plataforma moderna e intuitiva para gerenciar seus projetos, equipes e recursos com eficiência máxima.";
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+      {/* Inject SEO meta tags */}
+      {seoConfig && <SEOHead config={seoConfig} />}
       {/* Header */}
       <header className="border-b border-border/40 backdrop-blur-sm bg-background/80 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
