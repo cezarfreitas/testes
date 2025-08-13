@@ -16,6 +16,9 @@ export function createServer() {
   // Serve static files (uploads)
   app.use("/uploads", express.static("public/uploads"));
 
+  // Serve static files from SPA build
+  app.use(express.static("dist/spa"));
+
   // Example API routes
   app.get("/api/ping", (_req, res) => {
     const ping = process.env.PING_MESSAGE ?? "ping";
