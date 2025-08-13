@@ -2,14 +2,15 @@ import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { 
-  Sparkles, 
-  Home, 
-  Settings, 
-  Menu, 
-  Bell, 
+import {
+  Sparkles,
+  Home,
+  Settings,
+  Menu,
+  Bell,
   User,
-  Search
+  Search,
+  Globe
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
