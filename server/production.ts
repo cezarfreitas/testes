@@ -37,13 +37,24 @@ const app = createServer();
 
 app.listen(port, host, () => {
   console.log(`🚀 AdminFlow Server Started`);
+  console.log(`🏷️  Platform: ${detectedPlatform}`);
   console.log(`📡 Host: ${host}`);
   console.log(`🔌 Port: ${port}`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
-  console.log(`📊 Health check: http://${host === "0.0.0.0" ? "localhost" : host}:${port}/api/ping`);
-  console.log(`🌐 Application: http://${host === "0.0.0.0" ? "localhost" : host}:${port}`);
+
+  const displayHost = host === "0.0.0.0" ? "localhost" : host;
+  console.log(`📊 Health check: http://${displayHost}:${port}/api/ping`);
+  console.log(`🌐 Application: http://${displayHost}:${port}`);
 
   // Log additional info for debugging
   console.log(`📁 Static files: dist/spa`);
   console.log(`📤 Uploads: public/uploads`);
+
+  // Platform-specific info
+  if (detectedPlatform === "fly") {
+    console.log(`✈️  Fly.io app: ${process.env.FLY_APP_NAME || "unknown"}`);
+    console.log(`🌍 Fly region: ${process.env.FLY_REGION || "unknown"}`);
+  }
+
+  console.log(`\n✅ Server ready and listening!`);
 });
