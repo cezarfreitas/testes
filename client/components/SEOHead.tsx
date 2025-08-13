@@ -18,18 +18,16 @@ export default function SEOHead({ config, pageTitle, pageDescription }: SEOHeadP
 
       // Helper function to update or create meta tags
       const updateMetaTag = (name: string, content: string, property?: boolean) => {
-        if (!content) return;
-
         const attribute = property ? 'property' : 'name';
         let metaTag = document.querySelector(`meta[${attribute}="${name}"]`) as HTMLMetaElement;
-        
+
         if (!metaTag) {
           metaTag = document.createElement('meta');
           metaTag.setAttribute(attribute, name);
           document.head.appendChild(metaTag);
         }
-        
-        metaTag.setAttribute('content', content);
+
+        metaTag.setAttribute('content', content || '');
       };
 
       // Helper function to update link tags
