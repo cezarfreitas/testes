@@ -7,10 +7,22 @@ export function useSEO() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const loadSEOConfig = async () => {
+    const loadSEOConfig = async (retryCount = 0) => {
       try {
         setLoading(true);
-        const response = await fetch("/api/seo");
+        setError(null);
+
+        const response = await fetch("/api/seo", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data: SEOResponse = await response.json();
 
         if (data.success && data.data) {
@@ -20,13 +32,28 @@ export function useSEO() {
         }
       } catch (err) {
         console.error("Error loading SEO config:", err);
-        setError("Erro ao carregar configurações SEO");
+
+        // Retry up to 2 times with exponential backoff
+        if (retryCount < 2) {
+          setTimeout(() => {
+            loadSEOConfig(retryCount + 1);
+          }, Math.pow(2, retryCount) * 1000);
+        } else {
+          setError("Erro ao carregar configurações SEO");
+        }
       } finally {
-        setLoading(false);
+        if (retryCount === 0) {
+          setLoading(false);
+        }
       }
     };
 
-    loadSEOConfig();
+    // Delay initial load to ensure server is ready
+    const timer = setTimeout(() => {
+      loadSEOConfig();
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return { seoConfig, loading, error };
