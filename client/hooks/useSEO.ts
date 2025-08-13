@@ -35,9 +35,12 @@ export function useSEO() {
 
         // Retry up to 2 times with exponential backoff
         if (retryCount < 2) {
-          setTimeout(() => {
-            loadSEOConfig(retryCount + 1);
-          }, Math.pow(2, retryCount) * 1000);
+          setTimeout(
+            () => {
+              loadSEOConfig(retryCount + 1);
+            },
+            Math.pow(2, retryCount) * 1000,
+          );
         } else {
           setError("Erro ao carregar configurações SEO");
         }

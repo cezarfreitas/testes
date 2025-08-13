@@ -36,9 +36,9 @@ export default function LandingPage() {
       <SEOHead config={config} />
 
       {/* Optional: Show loading/error states for debugging */}
-      {process.env.NODE_ENV === 'development' && (
+      {process.env.NODE_ENV === "development" && (
         <div className="fixed bottom-4 right-4 text-xs text-muted-foreground bg-background/80 p-2 rounded">
-          SEO: {loading ? 'Loading...' : error ? 'Error' : 'Loaded'}
+          SEO: {loading ? "Loading..." : error ? "Error" : "Loaded"}
         </div>
       )}
     </div>
