@@ -10,12 +10,20 @@ interface SEOHeadProps {
 export default function SEOHead({ config, pageTitle, pageDescription }: SEOHeadProps) {
   useEffect(() => {
     const updateMetaTags = () => {
-      console.log('SEOHead: Updating meta tags with config:', config);
-
       // Update document title
       const title = pageTitle || config.title;
-      if (title) {
-        document.title = title;
+      document.title = title || 'AdminFlow';
+
+      // Force basic meta tags even if empty
+      const description = pageDescription || config.description;
+      if (description) {
+        let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+        if (!metaDesc) {
+          metaDesc = document.createElement('meta');
+          metaDesc.setAttribute('name', 'description');
+          document.head.appendChild(metaDesc);
+        }
+        metaDesc.setAttribute('content', description);
       }
 
       // Helper function to update or create meta tags
